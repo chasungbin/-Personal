@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Optional JavaScript  -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 날짜 CDN  -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <title>블로그</title>
+    <script>
+        $(document).ready(function () {
+            get_borders();
+        });
+
+        function get_borders() {
+        $("#list-box").empty()
+        $.ajax({
+            type: "GET",
+            url: `/api/blogs`,
+            data: {},
+            success: function (response) {
+                let borderList = response["blogs"]
+                for (let i = 0; i < borderList.length; i++) {
+                    //db에 저장된 date moment 포맷으로 변경
+                    let date = moment(borderList[i]['borderDate']).format('YYYY-MM-DD HH:mm')
+                    make_list(borderList[i], date)
+                }
+            }
+        })
+    }
+    function make_list(blogs, date) {
+        let htmlTemp = `<tr>
+                            <td><a href='/detail?boardId=${blogs["boardId"]}'>${blogs["title"]}</a></td>
+                            <td>${blogs["name"]}</td>
+                            <td>${date}</td>
+                        </tr>`
+        $("#list-box").append(htmlTemp)
+    }
+    function correct(boardId) {
+        location.href = "/borderCorrect"}
+
+        //  function get_borders() {
+        //      $.ajax({
+        //        type: "GET",
+        //          url: "api/blogs",
+        //         dataType: 'json',
+        //          data: {},
+        //          success: function (response) {
+        //              let rows = response["blogs"]
+        //              console.log(rows);
+        //              console.log(response);
+        //              for (let i = 0; i < rows.length; i++) {
+        //                  //db에 저장된 date moment 포맷으로 변경
+        //                  let name = rows[i]["name"]
+        //                  let title = rows[i]["title"]
+        //                  let date = moment(rows[i]['borderDate']).format('YYYY-MM-DD HH:mm')
+        //                  let boardId = rows[i]["boardId"]
+        //                  let temp_html = `<tr>
+        //                      <td><a href='/detail?boardId=${boardId}'>${title}</a></td>
+        //                      <td>${name}</td>
+        //                      <td>${date}</td>
+        //                  </tr>`
+        //                  $("#list-box").append(temp_html)
+        //              }
+        //          }
+        //      })
+
+             
+
+ 
+
+    </script>
+</head>
+
+<body>
+    <button onclick="location.href='/blogs'">작성</button>
+    <h1>블로그</h1>
+    <p>전체게시판</p>
+    <div id="list-box">
+
+    </div>
+</body>
+
+</html>
